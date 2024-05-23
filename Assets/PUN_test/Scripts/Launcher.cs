@@ -6,7 +6,7 @@ namespace Com.MyCompany.MyGame
 {
     public class Launcher : MonoBehaviourPunCallbacks
     {
-        [Tooltip("The maximum number of players per room")]
+        [SerializeField] private GameObject controlPanel, progressLabel;
         [SerializeField] private byte maxPlayersPerRoom = 4;
 
         /// <summary>
@@ -14,22 +14,17 @@ namespace Com.MyCompany.MyGame
         /// </summary>
         string gameVersion = "1";
 
-        /// <summary>
-        /// MonoBehaviour method called on GameObject by Unity during early initialization phase.
-        /// </summary>
-        void Awake()
+        private void Awake()
         {
             // #Critical
             // this makes sure we can use PhotonNetwork.LoadLevel() on the master client and all clients in the same room sync their level automatically
             PhotonNetwork.AutomaticallySyncScene = true;
         }
 
-        /// <summary>
-        /// MonoBehaviour method called on GameObject by Unity during initialization phase.
-        /// </summary>
-        void Start()
+        private void Start()
         {
-            Connect();
+            progressLabel.SetActive(false);
+            controlPanel.SetActive(true);
         }
 
         /// <summary>
@@ -39,6 +34,8 @@ namespace Com.MyCompany.MyGame
         /// </summary>
         public void Connect()
         {
+            progressLabel.SetActive(true);
+            controlPanel.SetActive(false);
             // we check if we are connected or not, we join if we are , else we initiate the connection to the server.
             if (PhotonNetwork.IsConnected)
             {
@@ -62,6 +59,8 @@ namespace Com.MyCompany.MyGame
 
         public override void OnDisconnected(DisconnectCause cause)
         {
+            progressLabel.SetActive(false);
+            controlPanel.SetActive(true);
             Debug.LogWarningFormat("PUN Basics Tutorial/Launcher: OnDisconnected() was called by PUN with reason {0}", cause);
         }
 
