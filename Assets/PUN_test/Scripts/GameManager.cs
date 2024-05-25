@@ -7,6 +7,22 @@ namespace Com.MyCompany.MyGame
 {
     public class GameManager : MonoBehaviourPunCallbacks
     {
+        public static GameManager Instance;
+        [SerializeField] private GameObject playerPrefab;
+
+        private void Awake()
+        {
+            Instance = this;
+        }
+
+        private void Start()
+        {
+            if (PhotonNetwork.InRoom && PlayerManager.LocalPlayerInstance == null)
+            {
+                PhotonNetwork.Instantiate(playerPrefab.name, new Vector3(0, 5, 0), Quaternion.identity);
+            }
+        }
+
         public override void OnPlayerEnteredRoom(Player other)
         {
             Debug.LogFormat("OnPlayerEnteredRoom() {0}", other.NickName); // not seen if you're the player connecting
