@@ -14,6 +14,7 @@ namespace Com.MyCompany.MyGame
         public float health = 100;
         [SerializeField] private GameObject beams;
         [SerializeField] private CameraWork cameraWork;
+        [SerializeField] private GameObject playerUiPrefab;
         bool isFiring;
 
         private void Awake()
@@ -31,6 +32,8 @@ namespace Com.MyCompany.MyGame
         {
             if (photonView.IsMine)
                 cameraWork.OnStartFollowing();
+            GameObject _uiGo = Instantiate(playerUiPrefab);
+            _uiGo.SendMessage("SetTarget", this, SendMessageOptions.RequireReceiver);
 #if UNITY_5_4_OR_NEWER
             // Unity 5.4 has a new scene management. register a method to call CalledOnLevelWasLoaded.
             UnityEngine.SceneManagement.SceneManager.sceneLoaded += OnSceneLoaded;
@@ -94,6 +97,8 @@ namespace Com.MyCompany.MyGame
             {
                 transform.position = new Vector3(0f, 5f, 0f);
             }
+            GameObject _uiGo = Instantiate(playerUiPrefab);
+            _uiGo.SendMessage("SetTarget", this, SendMessageOptions.RequireReceiver);
         }
 
         private void ProcessInputs()
