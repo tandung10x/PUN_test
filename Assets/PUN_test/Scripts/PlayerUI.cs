@@ -24,7 +24,7 @@ namespace Com.MyCompany.MyGame
 
         private void Update()
         {
-            playerHealthSlider.value = target.health;
+            playerHealthSlider.value = target.health / 100;
             if (target == null)
             {
                 Destroy(gameObject);
